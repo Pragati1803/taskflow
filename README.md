@@ -132,57 +132,6 @@ DELETE /api/tasks/:id                → delete task
 
 ---
 
-## 🚂 Railway Deployment
-
-### Step 1 — Push to GitHub
-```bash
-git init
-git add .
-git commit -m "Initial commit: TaskFlow app"
-git remote add origin https://github.com/YOUR_USERNAME/taskflow.git
-git push -u origin main
-```
-
-### Step 2 — Deploy on Railway
-1. Go to [railway.app](https://railway.app) and sign in
-2. Click **New Project → Deploy from GitHub repo**
-3. Select your `taskflow` repository
-4. Railway auto-detects the `railway.toml` config
-5. Set environment variables:
-   ```
-   JWT_SECRET=your-long-random-secret-key-here
-   NODE_ENV=production
-   PORT=5000
-   ```
-6. Click **Deploy** — your app will be live in ~2 minutes!
-
-### Step 3 — Get your URL
-Railway gives you a URL like `https://taskflow-production.up.railway.app`
-
----
-
-## 💻 Local Development
-
-```bash
-# Clone the repo
-git clone https://github.com/YOUR_USERNAME/taskflow.git
-cd taskflow
-
-# Install backend dependencies
-cd backend
-npm install
-
-# Set up environment
-cp .env.example .env
-# Edit .env with your JWT_SECRET
-
-# Start the server
-npm start
-# → App running at http://localhost:5000
-```
-
-Open `http://localhost:5000` in your browser. The frontend is served directly by the Express server.
-
 **First-time setup:**
 1. Click "Sign up" and create your first account
 2. You'll automatically be assigned the **Admin** role
@@ -216,18 +165,9 @@ Task { id, title, description, projectId, assigneeId, status,
 
 ---
 
-## 🎥 Demo Video Script (2-5 min)
-
-1. **Signup as Admin** (0:00-0:30) — Show first user gets admin role
-2. **Create a Project** (0:30-1:00) — Color picker, add description
-3. **Add Team Members** (1:00-1:30) — Sign up second user, add to project
-4. **Create Tasks** (1:30-2:30) — Different statuses, priorities, due dates
-5. **Kanban Board** (2:30-3:00) — Show board view, update task status
-6. **Dashboard** (3:00-3:30) — Show stats, overdue alerts, progress
-7. **Member Permissions** (3:30-4:00) — Log in as member, show restrictions
 
 ---
 
-## 👥 Author
+## 👥 Pragati Srivastava
 
 Built for the Full-Stack Assignment — Team Task Manager with RBAC.
