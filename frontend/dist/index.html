@@ -10,14 +10,119 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0a0b0f;--bg2:#111318;--bg3:#1a1d25;--bg4:#22262f;
-  --border:#2a2d38;--border2:#363a47;
-  --text:#f0f1f5;--text2:#9da3b4;--text3:#6b7280;
-  --accent:#7c6af7;--accent2:#5b4dd4;--accent-glow:rgba(124,106,247,0.15);
-  --green:#22c55e;--red:#ef4444;--yellow:#f59e0b;--blue:#3b82f6;--orange:#f97316;
-  --r:12px;--r2:8px;--shadow:0 4px 24px rgba(0,0,0,.4);
+:root {
+  --bg: #0a0a0a;
+  --bg2: #0f0f0f;
+  --bg3: #141414;
+  --bg4: #1a1a1a;
+  --border: #1a1a1a;
+  --border2: #2a2a2a;
+  --text: #ffffff;
+  --text2: #888888;
+  --text3: #444444;
+  --accent: #6366f1;
+  --accent2: #4f46e5;
+  --accent-glow: rgba(99,102,241,0.15);
+  --green: #22c55e;
+  --red: #ef4444;
+  --yellow: #f59e0b;
+  --blue: #3b82f6;
+  --r: 10px;
+  --r2: 8px;
+  --shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
+
+/* bold page header feel */
+.page-header h1.page-title {
+  font-size: 36px;
+  letter-spacing: -1px;
+}
+
+/* stark cards with left-border accent */
+.card, .stat-card {
+  border-radius: 0 !important;
+  border: none !important;
+  border-bottom: 1px solid #111 !important;
+  background: transparent !important;
+}
+
+.project-card {
+  border-radius: 10px !important;
+  background: #0f0f0f !important;
+  border: 1px solid #1a1a1a !important;
+}
+.project-card:hover {
+  border-color: #2a2a2a !important;
+  background: #141414 !important;
+  transform: translateX(5px) !important;
+}
+
+/* task card left stripe */
+.task-card {
+  border-left: 3px solid var(--accent) !important;
+  border-radius: 0 8px 8px 0 !important;
+  background: #0f0f0f !important;
+}
+.task-card:hover {
+  transform: translateX(5px) !important;
+  background: #141414 !important;
+}
+
+/* sidebar — stark left rail */
+.sidebar {
+  background: #060606 !important;
+  border-right: 1px solid #111 !important;
+}
+
+/* topbar — thin line */
+.topbar {
+  background: #0a0a0a !important;
+  border-bottom: 1px solid #111 !important;
+  height: 52px !important;
+}
+
+/* primary button — full white */
+.btn-primary {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-radius: 8px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.2px;
+}
+.btn-primary:hover {
+  background: #e8e8e8 !important;
+  transform: scale(1.02) !important;
+  box-shadow: none !important;
+}
+
+/* staggered entry animation for cards */
+.project-card:nth-child(1) { animation: slideUp .3s ease both; }
+.project-card:nth-child(2) { animation: slideUp .3s .06s ease both; }
+.project-card:nth-child(3) { animation: slideUp .3s .12s ease both; }
+.project-card:nth-child(4) { animation: slideUp .3s .18s ease both; }
+.task-card:nth-child(1) { animation: slideUp .25s ease both; }
+.task-card:nth-child(2) { animation: slideUp .25s .05s ease both; }
+.task-card:nth-child(3) { animation: slideUp .25s .10s ease both; }
+.task-card:nth-child(4) { animation: slideUp .25s .15s ease both; }
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* stat numbers — oversized */
+.stat-value {
+  font-size: 40px !important;
+  letter-spacing: -2px;
+}
+
+/* active nav — inverted pill */
+.nav-item.active {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-radius: 8px !important;
+}
+
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6}
 h1,h2,h3,h4{font-family:'Syne',sans-serif;font-weight:700;line-height:1.2}
 button,input,textarea,select{font-family:'DM Sans',sans-serif;outline:none;border:none}
