@@ -290,19 +290,44 @@ button{cursor:pointer}
 @keyframes sp{to{transform:rotate(360deg)}}
 @keyframes ambientFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
 
+.main.main-framed{margin-left:0;width:100%;padding:24px 0 80px}
+.shell-wrap{width:min(980px,calc(100vw - 28px));margin:0 auto;background:rgba(7,10,18,.82);border:1px solid var(--border-soft);border-radius:18px;box-shadow:0 36px 80px rgba(0,0,0,.45);overflow:hidden;position:relative}
+.shell-wrap::before{content:'';position:absolute;inset:0;background:linear-gradient(150deg,rgba(255,255,255,.06),transparent 34%);pointer-events:none}
+.topbar.topbar-framer{height:60px;padding:10px 14px;background:rgba(7,10,16,.86);border-bottom:1px solid var(--border-soft);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;position:sticky;top:0}
+.topbar.topbar-framer>div:first-child{font-size:13px!important;letter-spacing:0;color:var(--text);text-transform:none}
+.brand-chip{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid var(--border-soft);font-weight:700;font-size:13px}
+.top-nav{display:flex;justify-content:center;align-items:center;gap:4px;padding:4px;background:rgba(255,255,255,.02);border:1px solid var(--border-soft);border-radius:11px;max-width:420px;margin:0 auto;width:100%}
+.top-nav-item{background:transparent;color:var(--text2);border:1px solid transparent;font-size:12px;font-weight:700;padding:7px 10px;border-radius:8px;transition:all .3s var(--ease)}
+.top-nav-item:hover{color:#fff;background:rgba(255,255,255,.06)}
+.top-nav-item.active{color:#fff;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.1)}
+.top-actions{display:flex;align-items:center;gap:8px}
+.role-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.role-chip.admin{background:rgba(122,102,255,.16);color:#c3b7ff;border:1px solid rgba(122,102,255,.3)}
+.role-chip.member{background:rgba(61,222,149,.14);color:#9af1c3;border:1px solid rgba(61,222,149,.28)}
+.content.content-framed{padding:22px}
+
+.dashboard-view{display:flex;flex-direction:column;gap:18px}
+.dashboard-hero{padding:24px 24px 20px}
+.dashboard-eyebrow{font-size:10px;color:var(--text3);font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+.dashboard-headline{font-size:clamp(36px,5.2vw,52px);line-height:.97;letter-spacing:-.04em;margin-bottom:10px}
+.dashboard-subline{font-size:13px;color:var(--text3)}
+.dashboard-stat-grid .dashboard-stat-card{padding:16px 18px}
+
 .mobile-nav{display:none}
 
 @media(max-width:1024px){
-  .sidebar{width:228px;min-width:228px}
-  .main{margin-left:228px}
-  .content{padding:28px 24px 92px}
+  .main.main-framed{padding:16px 0 84px}
+  .shell-wrap{width:min(960px,calc(100vw - 20px))}
+  .content.content-framed{padding:18px}
   .grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:768px){
-  .sidebar{display:none}
-  .main{margin-left:0}
-  .topbar{height:62px;padding:0 14px}
-  .content{padding:18px 14px 104px}
+  .main.main-framed{padding:10px 0 104px}
+  .shell-wrap{width:calc(100vw - 12px);border-radius:14px}
+  .topbar.topbar-framer{grid-template-columns:1fr auto;height:auto;padding:10px}
+  .top-nav{display:none}
+  .role-chip{display:none}
+  .content.content-framed{padding:14px}
   .grid-4,.grid-2,.form-row{grid-template-columns:1fr}
   .grid-auto{grid-template-columns:1fr}
   .kanban-board{flex-direction:column}
@@ -310,6 +335,7 @@ button{cursor:pointer}
   .role-cards{grid-template-columns:1fr}
   .auth-card{padding:26px}
   .page-header h1{font-size:28px!important}
+  .dashboard-headline{font-size:36px}
   .mobile-nav{display:flex;position:fixed;left:10px;right:10px;bottom:10px;padding:8px;background:rgba(10,14,24,.86);backdrop-filter:blur(14px);border:1px solid var(--border);border-radius:14px;z-index:170;gap:6px;box-shadow:0 18px 44px rgba(0,0,0,.4)}
   .mobile-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;border-radius:10px;color:var(--text2);font-size:11px;font-weight:600;transition:all .34s var(--ease);border:1px solid transparent;background:transparent}
   .mobile-nav-item.active{background:rgba(122,102,255,.24);color:#fff;border-color:rgba(122,102,255,.34)}
@@ -648,42 +674,66 @@ function Dashboard({ onNav }) {
   const pct = stats.totalTasks>0?Math.round((stats.byStatus.done/stats.totalTasks)*100):0;
   const hr = new Date().getHours();
   const gr = hr<12?'morning':hr<17?'afternoon':'evening';
+  const firstName = user.name.split(' ')[0];
   return (
-    <div className="fade-in">
-      <div className="page-header">
-        <div>
-          <h1 style={{fontSize:24,fontWeight:800}}>Good {gr}, {user.name.split(' ')[0]} {user.role==='admin'?'🛡️':'👤'}</h1>
-          <p style={{color:'var(--text2)',fontSize:14}}>
-            {user.role==='admin' ? 'Full workspace overview — you have Admin access.' : 'Your personal task overview — assigned projects only.'}
-          </p>
+    <div className="fade-in dashboard-view">
+      <div className="dashboard-hero card">
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:16,flexWrap:'wrap'}}>
+          <div>
+            <div className="dashboard-eyebrow">Workspace overview</div>
+            <h1 className="dashboard-headline">Good {gr},<br/>{firstName} - let&apos;s ship.</h1>
+            <p className="dashboard-subline">
+              {stats.overdueTasks} task{stats.overdueTasks!==1?'s':''} overdue · {stats.myTasks} assigned to you · {pct}% complete
+            </p>
+          </div>
+          <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
+            <button className="btn btn-primary" onClick={()=>onNav('tasks')}>+ New Task</button>
+            <button className="btn btn-ghost" onClick={()=>onNav('projects')}>View Projects →</button>
+          </div>
         </div>
       </div>
-      <div className="grid-4" style={{marginBottom:24}}>
-        {[['📁','Projects',stats.totalProjects,'var(--accent)'],['✅','Total Tasks',stats.totalTasks,'var(--blue)'],['🎯','My Tasks',stats.myTasks,'var(--green)'],['⚠','Overdue',stats.overdueTasks,'var(--red)']].map(([icon,label,val,color])=>
-          <div key={label} className="stat-card"><div style={{fontSize:22}}>{icon}</div><div style={{fontFamily:'Syne',fontSize:32,fontWeight:800,color}}>{val}</div><div style={{fontSize:13,color:'var(--text2)'}}>{label}</div></div>
+
+      <div className="grid-4 dashboard-stat-grid" style={{marginBottom:22}}>
+        {[['Projects',stats.totalProjects,'var(--accent)'],['Total Tasks',stats.totalTasks,'var(--blue)'],['My Tasks',stats.myTasks,'var(--green)'],['Overdue',stats.overdueTasks,'var(--red)']].map(([label,val,color])=>
+          <div key={label} className="stat-card dashboard-stat-card">
+            <div style={{fontFamily:'Syne',fontSize:38,fontWeight:800,color,lineHeight:1}}>{val}</div>
+            <div style={{fontSize:11,color:'var(--text3)',textTransform:'uppercase',letterSpacing:'.14em'}}>{label}</div>
+          </div>
         )}
       </div>
+
       <div className="grid-2" style={{marginBottom:20}}>
         <div className="card">
-          <h3 style={{marginBottom:16,fontSize:15}}>Tasks by Status</h3>
-          {Object.entries(SL).map(([s,l]) => { const c=stats.byStatus[s]; const p=stats.totalTasks>0?Math.round((c/stats.totalTasks)*100):0; const col=s==='todo'?'var(--text3)':s==='in_progress'?'var(--blue)':s==='review'?'var(--yellow)':'var(--green)'; return <div key={s} style={{marginBottom:12}}><div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}><SPill s={s}/><span style={{fontSize:13,fontWeight:600}}>{c}</span></div><div style={{height:5,background:'var(--bg4)',borderRadius:99,overflow:'hidden'}}><div style={{height:'100%',borderRadius:99,background:col,width:p+'%',transition:'width 1s ease'}}/></div></div>; })}
-          <div className="divider"/>
-          <div style={{textAlign:'center'}}><span style={{fontFamily:'Syne',fontSize:28,fontWeight:800,color:'var(--green)'}}>{pct}%</span><div style={{fontSize:12,color:'var(--text3)'}}>Overall completion</div></div>
-        </div>
-        <div className="card">
-          <h3 style={{marginBottom:16,fontSize:15}}>⚠ Overdue Tasks</h3>
-          {stats.overdueList.length===0
-            ? <div style={{textAlign:'center',padding:'24px 0',color:'var(--green)'}}><div style={{fontSize:36}}>✓</div><div style={{marginTop:8}}>All clear!</div></div>
-            : stats.overdueList.map(t=><div key={t.id} className="task-card overdue" style={{marginBottom:8}} onClick={()=>st(t)}><div style={{fontWeight:600,fontSize:14,marginBottom:4}}>{t.title}</div><div style={{display:'flex',gap:8}}>{t.project&&<span className="tag" style={{borderColor:t.project.color,color:t.project.color,fontSize:11}}>{t.project.name}</span>}<span style={{fontSize:12,color:'var(--red)'}}>Due {fmtD(t.dueDate)}</span></div></div>)
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
+            <h3 style={{fontSize:13,textTransform:'uppercase',letterSpacing:'.12em',color:'var(--text3)'}}>Recent tasks</h3>
+            <button className="btn btn-ghost btn-sm" onClick={()=>onNav('tasks')}>View all</button>
+          </div>
+          {stats.recentTasks.length===0
+            ? <div className="empty-state" style={{padding:'26px 0'}}><div style={{fontWeight:700}}>No tasks yet</div></div>
+            : <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                {stats.recentTasks.slice(0,4).map(t=>
+                  <div key={t.id} className="task-card" style={{display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}} onClick={()=>st(t)}>
+                    <div style={{width:3,height:34,borderRadius:99,background:t.project?.color||'var(--accent)'}}/>
+                    <div style={{flex:1,minWidth:150}}>
+                      <div style={{fontWeight:700,fontSize:14}}>{t.title}</div>
+                      <div style={{display:'flex',alignItems:'center',gap:8,marginTop:4,flexWrap:'wrap'}}>
+                        <SPill s={t.status}/>
+                        <PPill p={t.priority}/>
+                      </div>
+                    </div>
+                    {t.project&&<span className="tag" style={{borderColor:t.project.color,color:t.project.color,fontSize:11}}>{t.project.name}</span>}
+                  </div>
+                )}
+              </div>
           }
         </div>
-      </div>
-      <div className="card">
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}><h3 style={{fontSize:15}}>Recent Tasks</h3><button className="btn btn-ghost btn-sm" onClick={()=>onNav('tasks')}>View all →</button></div>
-        {stats.recentTasks.length===0
-          ? <div className="empty-state" style={{padding:'30px 0'}}><div style={{fontSize:36,marginBottom:8}}>📋</div><div style={{fontWeight:700}}>No tasks yet</div></div>
-          : <div style={{display:'flex',flexDirection:'column',gap:8}}>{stats.recentTasks.map(t=><div key={t.id} className="task-card" style={{display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}} onClick={()=>st(t)}><SPill s={t.status}/><div style={{flex:1,minWidth:150,fontWeight:600,fontSize:14}}>{t.title}</div><PPill p={t.priority}/>{t.project&&<span className="tag" style={{borderColor:t.project.color,color:t.project.color,fontSize:11}}>{t.project.name}</span>}{t.assignee&&<Av name={t.assignee.name} sz={24}/>}{t.dueDate&&<span style={{fontSize:12,color:isOD(t.dueDate,t.status)?'var(--red)':'var(--text3)',whiteSpace:'nowrap'}}>📅 {fmtD(t.dueDate)}</span>}</div>)}</div>
-        }
+
+        <div className="card">
+          <h3 style={{marginBottom:16,fontSize:13,textTransform:'uppercase',letterSpacing:'.12em',color:'var(--text3)'}}>Progress by status</h3>
+          {Object.entries(SL).map(([s,l]) => { const c=stats.byStatus[s]; const p=stats.totalTasks>0?Math.round((c/stats.totalTasks)*100):0; const col=s==='todo'?'var(--text3)':s==='in_progress'?'var(--blue)':s==='review'?'var(--yellow)':'var(--green)'; return <div key={s} style={{marginBottom:12}}><div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}><SPill s={s}/><span style={{fontSize:13,fontWeight:600}}>{c}</span></div><div style={{height:5,background:'var(--bg4)',borderRadius:99,overflow:'hidden'}}><div style={{height:'100%',borderRadius:99,background:col,width:p+'%',transition:'width 1s ease'}}/></div></div>; })}
+          <div className="divider"/>
+          <div style={{textAlign:'center'}}><span style={{fontFamily:'Syne',fontSize:30,fontWeight:800,color:'var(--green)'}}>{pct}%</span><div style={{fontSize:12,color:'var(--text3)'}}>Overall completion</div></div>
+        </div>
       </div>
       {selTask&&<TaskDetail task={selTask} onClose={()=>st(null)} users={users} onUpdated={u=>ss(s=>({...s,recentTasks:s.recentTasks.map(t=>t.id===u.id?u:t),overdueList:s.overdueList.map(t=>t.id===u.id?u:t)}))} onDeleted={id=>ss(s=>({...s,recentTasks:s.recentTasks.filter(t=>t.id!==id),overdueList:s.overdueList.filter(t=>t.id!==id)}))}/>}
     </div>
@@ -873,90 +923,55 @@ function Shell() {
 
   return (
     <div className="app">
-      <aside className="sidebar">
-        {/* Logo */}
-        <div className="sidebar-logo">
-          <div className="logo-icon">⚡</div>
-          <div style={{fontFamily:'Syne',fontWeight:800,fontSize:17,background:'linear-gradient(135deg,#fff,var(--accent))',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>TaskFlow</div>
-        </div>
-
-        {/* Role banner */}
-        <div style={{padding:'10px 8px 0'}}>
-          <div className={`role-banner ${user.role}`}>
-            {isAdmin ? '🛡️ Admin — Full Access' : '👤 Member — Limited Access'}
-          </div>
-        </div>
-
-        <div style={{padding:'8px 12px 4px',fontSize:11,fontWeight:600,textTransform:'uppercase',letterSpacing:1,color:'var(--text3)'}}>Navigation</div>
-        {navItems.map(n => (
-          <div key={n.id}
-            className={`nav-item ${page===n.id||(page==='project'&&n.id==='projects')?'active':''}`}
-            onClick={() => nav(n.id)}
-          >
-            <span style={{fontSize:16,width:20,textAlign:'center'}}>{n.icon}</span>
-            {n.label}
-          </div>
-        ))}
-
-        {/* Admin-only section shown differently for members */}
-        {!isAdmin && (
-          <>
-            <div style={{padding:'10px 12px 4px',fontSize:11,fontWeight:600,textTransform:'uppercase',letterSpacing:1,color:'var(--text3)'}}>Admin Only</div>
-            <div className="nav-item locked" title="Admin only">
-              <span style={{fontSize:16,width:20,textAlign:'center'}}>⚙️</span>
-              Workspace Settings
-              <span className="nav-lock">🔒</span>
+      <main className="main main-framed">
+        <div className="shell-wrap">
+          <div className="topbar topbar-framer">
+            <div className="brand-chip">
+              <div style={{width:7,height:7,borderRadius:'50%',background:'linear-gradient(135deg,var(--accent),var(--accent2))'}}/>
+              <span>TaskFlow</span>
             </div>
-            <div className="nav-item locked" title="Admin only">
-              <span style={{fontSize:16,width:20,textAlign:'center'}}>📊</span>
-              All Projects
-              <span className="nav-lock">🔒</span>
-            </div>
-          </>
-        )}
 
-        {/* Footer */}
-        <div style={{marginTop:'auto',padding:16,borderTop:'1px solid var(--border)'}}>
-          <div style={{display:'flex',alignItems:'center',gap:10,padding:10,background:'var(--bg3)',borderRadius:'var(--r2)'}}>
-            <Av name={user.name} sz={32}/>
-            <div style={{flex:1,minWidth:0}}>
-              <div style={{fontSize:13,fontWeight:600,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{user.name}</div>
-              <div style={{fontSize:11,color:'var(--text3)',textTransform:'capitalize'}}>{user.role}</div>
+            <div className="top-nav">
+              {navItems.map(n => (
+                <button
+                  key={n.id}
+                  className={`top-nav-item ${page===n.id||(page==='project'&&n.id==='projects')?'active':''}`}
+                  onClick={() => nav(n.id)}
+                >
+                  {n.label}
+                </button>
+              ))}
             </div>
-            <button className="btn-icon" onClick={logout} title="Sign out" style={{fontSize:14}}>⎋</button>
-          </div>
-        </div>
-      </aside>
 
-      <main className="main">
-        <div className="topbar">
-          <div style={{flex:1,fontFamily:'Syne',fontWeight:600,fontSize:15}}>
-            {page==='project'?'← Projects':navItems.find(n=>n.id===page)?.label||'Dashboard'}
+            <div className="top-actions">
+              <div className={`role-chip ${isAdmin?'admin':'member'}`}>
+                {isAdmin?'🛡️ Admin':'👤 Member'}
+              </div>
+              <Av name={user.name} sz={30}/>
+              <button className="btn-icon" onClick={logout} title="Sign out" style={{fontSize:14}}>⎋</button>
+            </div>
           </div>
-          {/* Role chip in topbar */}
-          <div style={{display:'flex',alignItems:'center',gap:8,padding:'5px 12px',borderRadius:99,background:isAdmin?'rgba(124,106,247,.12)':'rgba(34,197,94,.1)',border:`1px solid ${isAdmin?'rgba(124,106,247,.25)':'rgba(34,197,94,.2)'}`,fontSize:13,fontWeight:600,color:isAdmin?'var(--accent)':'var(--green)'}}>
-            {isAdmin?'🛡️':'👤'} {user.role}
-          </div>
-          <Av name={user.name} sz={32}/>
-        </div>
-        <div className="content">{renderPage()}</div>
-        <div className="mobile-nav">
-          {navItems.map(n => (
-            <button
-              key={n.id}
-              className={`mobile-nav-item ${page===n.id||(page==='project'&&n.id==='projects')?'active':''}`}
-              onClick={() => nav(n.id)}
-            >
-              <span style={{fontSize:15}}>{n.icon}</span>
-              <span>{n.label}</span>
-            </button>
-          ))}
-          <button className="mobile-nav-item" onClick={logout}>
-            <span style={{fontSize:15}}>⎋</span>
-            <span>Sign out</span>
-          </button>
+
+          <div className="content content-framed">{renderPage()}</div>
         </div>
       </main>
+
+      <div className="mobile-nav">
+        {navItems.map(n => (
+          <button
+            key={n.id}
+            className={`mobile-nav-item ${page===n.id||(page==='project'&&n.id==='projects')?'active':''}`}
+            onClick={() => nav(n.id)}
+          >
+            <span style={{fontSize:15}}>{n.icon}</span>
+            <span>{n.label}</span>
+          </button>
+        ))}
+        <button className="mobile-nav-item" onClick={logout}>
+          <span style={{fontSize:15}}>⎋</span>
+          <span>Sign out</span>
+        </button>
+      </div>
     </div>
   );
 }
