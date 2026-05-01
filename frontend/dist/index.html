@@ -122,32 +122,13 @@
   color: #000000 !important;
   border-radius: 8px !important;
 }
-body * {
-  transition: all 0.25s ease !important;
-}
+/* overrides go right here, below :root */
+  .page-header h1.page-title { ... }
+  .card, .stat-card { ... }
+  /* ... rest of overrides ... */
 
-/* force cards */
-.project-card,
-.task-card,
-.card,
-.stat-card {
-  background: #0f0f0f !important;
-  border: 1px solid #1a1a1a !important;
-  border-radius: 10px !important;
-}
-
-/* hover MUST be stronger */
-.project-card:hover,
-.task-card:hover {
-  transform: translateY(-5px) scale(1.02) !important;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.5) !important;
-}
-
-/* buttons override */
-.btn-primary {
-  background: white !important;
-  color: black !important;
-}
+  /* your OTHER existing styles continue below */
+</style>
 
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6}
 h1,h2,h3,h4{font-family:'Syne',sans-serif;font-weight:700;line-height:1.2}
